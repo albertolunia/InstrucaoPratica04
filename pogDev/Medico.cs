@@ -12,6 +12,9 @@ public class Medico : Pessoa{
     }
         public Medico(string nome,string cpf,string dataDeNascimento,string crm) : base(nome,cpf,dataDeNascimento){
         this.crm = crm;
-        
+    }
+
+    public override void imprimeInfo(){
+        Console.WriteLine($"Nome: {this.Nome}, CPF: {this.Cpf}, CRM: {this.Crm}");
     }
 }

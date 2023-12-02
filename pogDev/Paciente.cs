@@ -2,7 +2,7 @@
 
 public class Paciente : Pessoa{
     private string sexo;
-    private string sintomas;
+    private List<string> sintomas;
     public string Sexo{
         get{
             return sexo;
@@ -14,7 +14,7 @@ public class Paciente : Pessoa{
                 throw new Exception("Sexo invalido");
         }
     }
-    public string Sintomas{
+    public List<string> Sintomas{
         get{
             return sintomas;
         }
@@ -23,9 +23,9 @@ public class Paciente : Pessoa{
         }
     }
 
-
-    public Paciente(string nome,string cpf,string dataDeNascimento,string sexo,string sintomas):base(nome,cpf,dataDeNascimento){
+    public Paciente(string nome,string cpf,string dataDeNascimento,string sexo,List<string> sintomas):base(nome,cpf,dataDeNascimento){
         
+        this.sintomas = new List<string>();
         this.sintomas = sintomas;
         if((sexo.Equals("masculino"))||(sexo.Equals("feminino")))
             this.sexo = sexo;
