@@ -1,4 +1,6 @@
-namespace ConsultorioMedico{
+
+namespace ConsultorioMedico
+{
     class Requisitos{
         List<Paciente> pacientes = new();
         List<Medico> medicos = new();
@@ -8,6 +10,23 @@ namespace ConsultorioMedico{
 
         public void AddExame(Exame exame)
         {
+            try
+            {
+                if (exame == null)
+                    throw new Exception("Exame inválido!!!");
+                if (exame.Titulo == "")
+                    throw new Exception("Título inválido!!!");
+                if (exame.Valor <= 0)
+                    throw new Exception("Valor inválido!!!");
+                if (exame.Local == "")
+                    throw new Exception("Local inválido!!!");
+                if (exames.Any(e => e.Titulo == exame.Titulo))
+                    throw new Exception("Exame já cadastrado!!!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             exames.Add(exame);
         }
 
@@ -29,7 +48,43 @@ namespace ConsultorioMedico{
             get{
                 return atendimentosFinalizados;
             }
-        }	
+        }
+
+        public Medico getMedico(string cpf)
+        {
+            medicos = MedicosDisponiveis;
+            try
+            {
+                foreach (Medico medico in medicos)
+                {
+                    if (medico.Cpf == cpf)
+                    {
+                        return medico;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+            }
+            return null;
+            
+        }
+
+        public Paciente getPaciente(string cpf){
+            pacientes = PacientesDisponiveis;
+            try{
+                foreach (Paciente paciente in pacientes)
+                    if (paciente.Cpf == cpf)
+                        return paciente;
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+            }
+            return null;
+
+        }
 
         public void CadastrarPaciente(Paciente paciente){
             try{
@@ -45,13 +100,19 @@ namespace ConsultorioMedico{
                     throw new Exception("Data de nascimento inválida!!!");
                 if (paciente.Nome == "")
                     throw new Exception("Nome inválido!!!");
-                if (!pacientes.Any(p => p.Cpf == paciente.Cpf))
+                if (!pacientes.Any(p => p.Cpf == paciente.Cpf)){
                     pacientes.Add(paciente);
-                else
+                    Console.WriteLine("\nPaciente cadastrado com sucesso!!!");
+                    Console. ReadKey(true);
+                }
+                else{
                     Console.WriteLine("\nPaciente já cadastrado!!!");
+                    Console. ReadKey(true);
+                }
             }
             catch (Exception e){
                 Console.WriteLine(e.Message);
+                Console. ReadKey(true);
             }
         }
 
@@ -67,10 +128,15 @@ namespace ConsultorioMedico{
                     throw new Exception("Data de nascimento inválida!!!");
                 if (medico.Nome == "")
                     throw new Exception("Nome inválido!!!");
-                if (!medicos.Any(m => m.Cpf == medico.Cpf) && !medicos.Any(m => m.Crm == medico.Crm))
+                if (!medicos.Any(m => m.Cpf == medico.Cpf) && !medicos.Any(m => m.Crm == medico.Crm)){
                     medicos.Add(medico);
-                else
+                    Console.WriteLine("\nMédico cadastrado com sucesso!!!");
+                    Console. ReadKey(true);
+                }
+                else{
                     Console.WriteLine("\nMédico já cadastrado!!!");
+                    Console. ReadKey(true);
+                }
             }
             catch (Exception e){
                 Console.WriteLine(e.Message);
@@ -81,12 +147,14 @@ namespace ConsultorioMedico{
             Console.WriteLine("\nLista de pacientes:\n");
             foreach (Paciente paciente in pacientes)
                 Console.WriteLine($"Nome: {paciente.Nome} | CPF: {FormatarCPF(paciente.Cpf)} | Data de Nascimento: {FormatarData(paciente.DataNascimento)} | Sexo: {paciente.Sexo} | Sintomas: {paciente.Sintomas}");
+            Console. ReadKey(true);
         }
 
         public void ListarMedicos(){
             Console.WriteLine("\nLista de medicos:\n");
             foreach (Medico medico in medicos)
                 Console.WriteLine($"Nome: {medico.Nome} | CPF: {FormatarCPF(medico.Cpf)} | Data de Nascimento: {FormatarData(medico.DataNascimento)} | CRM: {medico.Crm}");
+            Console. ReadKey(true);
         }
 
         private string FormatarCPF(string cpf){
@@ -103,6 +171,7 @@ namespace ConsultorioMedico{
             Console.WriteLine($"\nLista de medicos entre as idades({idade1} e {idade2}):\n");
             foreach (Medico medico in medicosEntreIdade)
                 Console.WriteLine($"Nome: {medico.Nome} | CPF: {FormatarCPF(medico.Cpf)} | Data de Nascimento: {FormatarData(medico.DataNascimento)} | CRM: {medico.Crm}");
+            Console. ReadKey(true);
         }
 
         public void PacientesEntreIdade(int idade1, int idade2)
@@ -111,6 +180,7 @@ namespace ConsultorioMedico{
             Console.WriteLine($"\nLista de pacientes entre as idades({idade1} e {idade2}):\n");
             foreach (Paciente paciente in pacientesEntreIdade)
                 Console.WriteLine($"Nome: {paciente.Nome} | CPF: {FormatarCPF(paciente.Cpf)} | Data de Nascimento: {FormatarData(paciente.DataNascimento)} | Sexo: {paciente.Sexo} | Sintomas: {paciente.Sintomas}");
+            Console. ReadKey(true);
         }
 
         public void PacientesDoSexo(string sexo){
@@ -118,12 +188,14 @@ namespace ConsultorioMedico{
             Console.WriteLine($"\nLista de pacientes do sexo({sexo}):\n");
             foreach (Paciente paciente in pacientesDoSexo)
                 Console.WriteLine($"Nome: {paciente.Nome} | CPF: {FormatarCPF(paciente.Cpf)} | Data de Nascimento: {FormatarData(paciente.DataNascimento)} | Sexo: {paciente.Sexo} | Sintomas: {paciente.Sintomas}");
+            Console. ReadKey(true);
         }
 
         public void ListarPacientesEmOrdem(){
             Console.WriteLine("\nLista de pacientes em ordem alfabética:\n");
             foreach (Paciente paciente in pacientes.OrderBy(p => p.Nome))
                 Console.WriteLine($"Nome: {paciente.Nome} | CPF: {FormatarCPF(paciente.Cpf)} | Data de Nascimento: {FormatarData(paciente.DataNascimento)} | Sexo: {paciente.Sexo} | Sintomas: {paciente.Sintomas}");
+            Console. ReadKey(true);
         }
 
         public void PacientesComSintomas(string sintoma){
@@ -131,6 +203,7 @@ namespace ConsultorioMedico{
             Console.WriteLine($"\nLista de pacientes com sintomas({sintoma}):\n");
             foreach (Paciente paciente in pacientesComSintomas)
                 Console.WriteLine($"Nome: {paciente.Nome} | CPF: {FormatarCPF(paciente.Cpf)} | Data de Nascimento: {FormatarData(paciente.DataNascimento)} | Sexo: {paciente.Sexo} | Sintomas: {paciente.Sintomas}");
+            Console. ReadKey(true);
         }
 
         public void AniversariantesDoMes(int mes){
@@ -142,6 +215,7 @@ namespace ConsultorioMedico{
             Console.WriteLine($"\nLista de medicos aniversariantes do mês({mes}):\n");
             foreach (Medico medico in medicosAniversariantesDoMes)
                 Console.WriteLine($"Nome: {medico.Nome} | CPF: {FormatarCPF(medico.Cpf)} | Data de Nascimento: {FormatarData(medico.DataNascimento)} | CRM: {medico.Crm}");
+            Console. ReadKey(true);
         }
 
         public void IniciarAtendimento(Paciente paciente, Medico medico, string suspeitaInicial){
@@ -160,9 +234,11 @@ namespace ConsultorioMedico{
                 atendimentosEmAndamento.Add(atendimento);
                 Console.WriteLine($"\nAtendimento iniciado às {atendimento.InicioAtendimento}!!!");
                 Console.WriteLine($"Suspeita inicial: {atendimento.SuspeitaInicial}");
+                Console. ReadKey(true);
             }
             catch (Exception e){
                 Console.WriteLine(e.Message);
+                Console. ReadKey(true);
             }
         }
 
@@ -178,9 +254,11 @@ namespace ConsultorioMedico{
                     throw new Exception("Atendimento não iniciado!!!");
                 atendimento.ExamesResultado.Add((exame, ""));
                 Console.WriteLine($"\nExame {exame.Titulo} adicionado ao atendimento!!!");
+                Console. ReadKey(true);
             }
             catch (Exception e){
                 Console.WriteLine(e.Message);
+                Console. ReadKey(true);s
             }
         }
 
@@ -199,9 +277,11 @@ namespace ConsultorioMedico{
                 atendimentosEmAndamento.Remove(atendimento);
                 Console.WriteLine($"\nAtendimento finalizado às {atendimento.FimAtendimento}!!!");
                 Console.WriteLine($"Valor: {atendimento.Valor}");
+                Console. ReadKey(true);
             }
             catch (Exception e){
                 Console.WriteLine(e.Message);
+                Console. ReadKey(true);
             }
         }
 
@@ -215,6 +295,7 @@ namespace ConsultorioMedico{
                 Console.WriteLine($"Suspeita inicial: {atendimento.SuspeitaInicial}");
                 Console.WriteLine("----------------------------------");
             }
+            Console. ReadKey(true);
         }
 
         public void MedicosEmOrdemDecrescenteAtendimentosConcluidos()
@@ -226,29 +307,31 @@ namespace ConsultorioMedico{
                 Console.WriteLine($"Quantidade de atendimentos concluídos: {atendimentosFinalizados.Count(a => a.MedicoResponsavel == medico)}");
                 Console.WriteLine("----------------------------------");
             }
+            Console. ReadKey(true);
         }
 
         public void AtendimentosComPalavra(string palavra)
         {
-            var atendimentos = atendimentosEmAndamento.Concat(atendimentosFinalizados);
-            var atendimentosFiltrados = atendimentos.Where(a => a.SuspeitaInicial.Contains(palavra) || a.DiagnosticoFinal.Contains(palavra));
-            
-            foreach (var atendimento in atendimentosFiltrados)
+            var atendimentos = atendimentosEmAndamento.Concat(atendimentosFinalizados).ToList();
+            var atendimentosComPalavra = atendimentos.Where(a => a.SuspeitaInicial.Contains(palavra) || a.DiagnosticoFinal.Contains(palavra)).ToList();
+            foreach (var atendimento in atendimentosComPalavra)
             {
-                Console.WriteLine($"Paciente: {atendimento.PacienteAtendido.Nome}");
+                Console.WriteLine($"\nPaciente: {atendimento.PacienteAtendido.Nome}");
                 Console.WriteLine($"Médico: {atendimento.MedicoResponsavel.Nome}");
-                Console.WriteLine($"Suspeita Inicial: {atendimento.SuspeitaInicial}");
-                Console.WriteLine($"Diagnóstico Final: {atendimento.DiagnosticoFinal}");
+                Console.WriteLine($"Início: {atendimento.InicioAtendimento}");
+                Console.WriteLine($"Suspeita inicial: {atendimento.SuspeitaInicial}");
+                Console.WriteLine($"Diagnóstico final: {atendimento.DiagnosticoFinal}");
                 Console.WriteLine("----------------------------------");
             }
+            Console. ReadKey(true);
         }
 
         public void ImprimirExamesMaisUtilizados()
-        {
-            //private List<(Exame, string)> _examesResultado;
-            //Examte Titulo
+{
+            var examesEmAndamento = atendimentosEmAndamento.SelectMany(a => a.ExamesResultado);
+            var examesFinalizados = atendimentosFinalizados.SelectMany(a => a.ExamesResultado);
+            var exames = examesEmAndamento.Concat(examesFinalizados).ToList();
 
-            var exames = atendimentosEmAndamento.SelectMany(a => a.ExamesResultado).ToList();
             var examesAgrupados = exames.GroupBy(e => e.Item1.Titulo).ToList();
             var examesOrdenados = examesAgrupados.OrderByDescending(e => e.Count());
             foreach (var exame in examesOrdenados)
@@ -257,7 +340,24 @@ namespace ConsultorioMedico{
                 Console.WriteLine($"Quantidade de vezes utilizado: {exame.Count()}");
                 Console.WriteLine("----------------------------------");
             }
+            Console. ReadKey(true);
         }
-        
+        public List<Exame> ExamesDisponiveis{
+            get{
+                return exames;
+            }
+        }
+
+        public List<Medico> MedicosDisponiveis{
+            get{
+                return medicos;
+            }
+        }
+
+        public List<Paciente> PacientesDisponiveis{
+            get{
+                return pacientes;
+            }
+        }
     }
 }

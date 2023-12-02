@@ -46,5 +46,9 @@ namespace ConsultorioMedico{
             _descricao = descricao;
             _local = local;
         }
+
+        public Exame(){
+            
+        }
     }
 }
