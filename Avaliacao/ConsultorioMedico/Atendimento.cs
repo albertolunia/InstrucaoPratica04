@@ -1,6 +1,6 @@
 namespace ConsultorioMedico{
     class Atendimento{
-        private DateTime _dataHora;
+        private DateTime _inicioAtendimento;
         private string _suspeitaInicial;
         private List<(Exame, string)> _examesResultado;
         private double _valor;
@@ -10,12 +10,32 @@ namespace ConsultorioMedico{
         private Paciente _pacienteAtendido;
         private string _diagnosticoFinal;
 
-        public DateTime DataHora{
+        public Atendimento(){
+            _inicioAtendimento = DateTime.Now;
+            _suspeitaInicial = "";
+            _examesResultado = new();
+            _valor = 0;
+
+            _fimAtendimento = DateTime.Now;
+            _medicoResponsavel = new();
+            _pacienteAtendido = new();
+            _diagnosticoFinal = "";
+        }
+
+        public Atendimento(Paciente paciente, Medico medico, string suspeitaInicial){
+            _inicioAtendimento = DateTime.Now;
+            _suspeitaInicial = suspeitaInicial;
+            _medicoResponsavel = medico;
+            _pacienteAtendido = paciente;
+            _examesResultado = new();
+        }
+
+        public DateTime InicioAtendimento{
             get{
-                return _dataHora;
+                return _inicioAtendimento;
             }
             set{
-                _dataHora = value;
+                _inicioAtendimento = value;
             }
         }
 

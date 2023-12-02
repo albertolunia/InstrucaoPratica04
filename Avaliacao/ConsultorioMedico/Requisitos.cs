@@ -2,11 +2,34 @@ namespace ConsultorioMedico{
     class Requisitos{
         List<Paciente> pacientes = new();
         List<Medico> medicos = new();
+        List<Atendimento> atendimentosEmAndamento = new();
+        List<Atendimento> atendimentosFinalizados = new();
+        List<Exame> exames = new();
+
+        public void AddExame(Exame exame)
+        {
+            exames.Add(exame);
+        }
 
         public Requisitos(){
             Paciente paciente = new();
             Medico medico = new();
+            List<Exame> exames = new();
+            List<Atendimento> atendimentosEmAndamento = new();
+            List<Atendimento> atendimentosFinalizados = new();
         }
+        
+        public List<Atendimento> AtendimentosEmAndamento{
+            get{
+                return atendimentosEmAndamento;
+            }
+        }
+
+        public List<Atendimento> AtendimentosFinalizados{
+            get{
+                return atendimentosFinalizados;
+            }
+        }	
 
         public void CadastrarPaciente(Paciente paciente){
             try{
@@ -120,5 +143,121 @@ namespace ConsultorioMedico{
             foreach (Medico medico in medicosAniversariantesDoMes)
                 Console.WriteLine($"Nome: {medico.Nome} | CPF: {FormatarCPF(medico.Cpf)} | Data de Nascimento: {FormatarData(medico.DataNascimento)} | CRM: {medico.Crm}");
         }
+
+        public void IniciarAtendimento(Paciente paciente, Medico medico, string suspeitaInicial){
+            try{
+                if (paciente == null)
+                    throw new Exception("Paciente inválido!!!");
+                if (medico == null)
+                    throw new Exception("Médico inválido!!!");
+                if (suspeitaInicial == "")
+                    throw new Exception("Suspeita inicial inválida!!!");
+                if (!pacientes.Any(p => p.Cpf == paciente.Cpf))
+                    throw new Exception("Paciente não cadastrado!!!");
+                if (!medicos.Any(m => m.Cpf == medico.Cpf))
+                    throw new Exception("Médico não cadastrado!!!");
+                Atendimento atendimento = new(paciente, medico, suspeitaInicial);
+                atendimentosEmAndamento.Add(atendimento);
+                Console.WriteLine($"\nAtendimento iniciado às {atendimento.InicioAtendimento}!!!");
+                Console.WriteLine($"Suspeita inicial: {atendimento.SuspeitaInicial}");
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public void SolicitarExame(Exame exame, Atendimento atendimento){
+            try{
+                if (exame == null)
+                    throw new Exception("Exame inválido!!!");
+                if (atendimento == null)
+                    throw new Exception("Atendimento inválido!!!");
+                if (!exames.Any(e => e.Titulo == exame.Titulo))
+                    throw new Exception("Exame não cadastrado!!!");
+                if (!atendimentosEmAndamento.Any(a => a.InicioAtendimento == atendimento.InicioAtendimento))
+                    throw new Exception("Atendimento não iniciado!!!");
+                atendimento.ExamesResultado.Add((exame, ""));
+                Console.WriteLine($"\nExame {exame.Titulo} adicionado ao atendimento!!!");
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public void FinalizarAtendimento(Atendimento atendimento, string diagnosticoFinal){
+            try{
+                if (atendimento == null)
+                    throw new Exception("Atendimento inválido!!!");
+                if (diagnosticoFinal == "")
+                    throw new Exception("Diagnóstico final inválido!!!");
+                if (!atendimentosEmAndamento.Any(a => a.InicioAtendimento == atendimento.InicioAtendimento))
+                    throw new Exception("Atendimento não iniciado!!!");
+                atendimento.FimAtendimento = DateTime.Now;
+                atendimento.DiagnosticoFinal = diagnosticoFinal;
+                atendimento.Valor = atendimento.ExamesResultado.Sum(e => e.Item1.Valor);
+                atendimentosFinalizados.Add(atendimento);
+                atendimentosEmAndamento.Remove(atendimento);
+                Console.WriteLine($"\nAtendimento finalizado às {atendimento.FimAtendimento}!!!");
+                Console.WriteLine($"Valor: {atendimento.Valor}");
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public void ListarAtendimentosEmAberto(){
+            var atendimentosEmAberto = atendimentosEmAndamento.OrderByDescending(a => a.InicioAtendimento);
+            foreach (var atendimento in atendimentosEmAberto)
+            {
+                Console.WriteLine($"\nPaciente: {atendimento.PacienteAtendido.Nome}");
+                Console.WriteLine($"Médico: {atendimento.MedicoResponsavel.Nome}");
+                Console.WriteLine($"Início: {atendimento.InicioAtendimento}");
+                Console.WriteLine($"Suspeita inicial: {atendimento.SuspeitaInicial}");
+                Console.WriteLine("----------------------------------");
+            }
+        }
+
+        public void MedicosEmOrdemDecrescenteAtendimentosConcluidos()
+        {
+            var medicosOrdenados = medicos.OrderByDescending(m => atendimentosFinalizados.Count(a => a.MedicoResponsavel == m));
+            foreach (var medico in medicosOrdenados)
+            {
+                Console.WriteLine($"\nMédico: {medico.Nome}");
+                Console.WriteLine($"Quantidade de atendimentos concluídos: {atendimentosFinalizados.Count(a => a.MedicoResponsavel == medico)}");
+                Console.WriteLine("----------------------------------");
+            }
+        }
+
+        public void AtendimentosComPalavra(string palavra)
+        {
+            var atendimentos = atendimentosEmAndamento.Concat(atendimentosFinalizados);
+            var atendimentosFiltrados = atendimentos.Where(a => a.SuspeitaInicial.Contains(palavra) || a.DiagnosticoFinal.Contains(palavra));
+            
+            foreach (var atendimento in atendimentosFiltrados)
+            {
+                Console.WriteLine($"Paciente: {atendimento.PacienteAtendido.Nome}");
+                Console.WriteLine($"Médico: {atendimento.MedicoResponsavel.Nome}");
+                Console.WriteLine($"Suspeita Inicial: {atendimento.SuspeitaInicial}");
+                Console.WriteLine($"Diagnóstico Final: {atendimento.DiagnosticoFinal}");
+                Console.WriteLine("----------------------------------");
+            }
+        }
+
+        public void ImprimirExamesMaisUtilizados()
+        {
+            //private List<(Exame, string)> _examesResultado;
+            //Examte Titulo
+
+            var exames = atendimentosEmAndamento.SelectMany(a => a.ExamesResultado).ToList();
+            var examesAgrupados = exames.GroupBy(e => e.Item1.Titulo).ToList();
+            var examesOrdenados = examesAgrupados.OrderByDescending(e => e.Count());
+            foreach (var exame in examesOrdenados)
+            {
+                Console.WriteLine($"Exame: {exame.Key}");
+                Console.WriteLine($"Quantidade de vezes utilizado: {exame.Count()}");
+                Console.WriteLine("----------------------------------");
+            }
+        }
+        
     }
 }

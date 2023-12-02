@@ -40,5 +40,11 @@ namespace ConsultorioMedico{
                 _local = value;
             }
         }
+        public Exame(string titulo, double valor, string descricao, string local){
+            _titulo = titulo;
+            _valor = valor;
+            _descricao = descricao;
+            _local = local;
+        }
     }
 }

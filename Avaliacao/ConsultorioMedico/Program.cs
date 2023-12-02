@@ -7,6 +7,20 @@ class Programa{
         Requisitos requisitos = new();
         Paciente paciente = new();
         Medico medico = new();
+        List<Atendimento> atendimentos = requisitos.AtendimentosEmAndamento;
+
+        Exame exame1 = new Exame("Exame de Sangue", 25, "", "Sala 1");
+        Exame exame2 = new Exame("Exame de Urina", 30, "", "Sala 2");
+        Exame exame3 = new Exame("Ultrassonografia", 300, "", "Sala 3");
+        Exame exame4 = new Exame("Ressonância Magnética", 500, "", "Sala 4");
+        Exame exame5 = new Exame("Tomografia Computadorizada", 600, "", "Sala 5");
+
+
+        requisitos.AddExame(exame1);
+        requisitos.AddExame(exame2);
+        requisitos.AddExame(exame3);
+        requisitos.AddExame(exame4);
+        requisitos.AddExame(exame5);
 
         //Testando se insere pacientes e medicos
         paciente = new Paciente{
@@ -15,26 +29,6 @@ class Programa{
             Cpf = "99999999999",
             Sexo = "M",
             Sintomas = "Dor de cabeça e Gripe"
-        };
-
-        requisitos.CadastrarPaciente(paciente);
-
-        paciente = new Paciente{
-            Nome = "Maria",
-            DataNascimento = "21022001",
-            Cpf = "99993999999",
-            Sexo = "F",
-            Sintomas = "Colica"
-        };
-
-        requisitos.CadastrarPaciente(paciente);
-
-        paciente = new Paciente{
-            Nome = "Alberto",
-            DataNascimento = "30012013",
-            Cpf = "99993999991",
-            Sexo = "M",
-            Sintomas = "Dor de barriga"
         };
 
         requisitos.CadastrarPaciente(paciente);
@@ -48,73 +42,24 @@ class Programa{
 
         requisitos.CadastrarMedico(medico);
 
-        medico = new Medico{
-            Nome = "Ana",
-            DataNascimento = "21022001",
-            Cpf = "12345678911",
-            Crm = "123457"
-        };
-
-        requisitos.CadastrarMedico(medico);
-
-        requisitos.ListarPacientes();
-        requisitos.ListarMedicos();
-
-        //Testando se insere pacientes com o mesmo CPF
-
-        Console.WriteLine("\nTestando se é possivel inserir pacientes e medicos duplicados");
-        requisitos.CadastrarPaciente(paciente);
-
-        //Testando se insere medicos com o mesmo CPF
-
-        requisitos.CadastrarMedico(medico);
-
-        //Testando se insere medicos com o mesmo CRM
-
-        medico.Cpf = "12312312312";
-        requisitos.CadastrarMedico(medico);
-
         Console.WriteLine("\n---------------------------------------------\n");
-        Console.WriteLine("Relatorios:\n");
-        Console.WriteLine("Relatorio: Médicos com idades entre dois valores:");
-        requisitos.MedicosEntreIdade(20, 30);
 
-        Console.WriteLine("\nRelatorio: Pacientes com idades entre dois valores:");
-        requisitos.PacientesEntreIdade(20, 30);
+        requisitos.IniciarAtendimento(paciente, medico, paciente.Sintomas);
 
-        Console.WriteLine("\nRelatorio: Pacientes do sexo informado pelo usuario:");
-        requisitos.PacientesDoSexo("M");
+        requisitos.SolicitarExame(exame1, atendimentos[0]);
+        requisitos.SolicitarExame(exame2, atendimentos[0]);
+        requisitos.SolicitarExame(exame3, atendimentos[0]);
 
-        Console.WriteLine("\nRelatorio: Pacientes em ordem alfabética:");
-        requisitos.ListarPacientesEmOrdem();
-
-        Console.WriteLine("\nRelatorio: Pacientes cujos sintomas contenha texto informado pelo usuário");
-        requisitos.PacientesComSintomas("Dor de cabeça");
-
-        Console.WriteLine("\nRelatorio: Médicos e Pacientes aniversariantes do mês informado:");
-        requisitos.AniversariantesDoMes(11);
-
-        Console.WriteLine("\n---------------------------------------------\n");
-        Console.WriteLine("Testanto exceções:\n");
-
-        paciente = new Paciente{
-            Nome = "Maria",
-            DataNascimento = "21022001",
-            Cpf = "999939999999999",
-            Sexo = "x",
-            Sintomas = "Colica"
-        };
         
-        requisitos.CadastrarPaciente(paciente);
 
-        medico = new Medico{
-            Nome = "Ana",
-            DataNascimento = "21022001",
-            Cpf = "12312345678911",
-            Crm = "123457"
-        };
+        requisitos.ListarAtendimentosEmAberto();
 
-        requisitos.CadastrarMedico(medico);
+        requisitos.ImprimirExamesMaisUtilizados();
+
+        requisitos.FinalizarAtendimento(atendimentos[0], "Virose");
+
+        requisitos.MedicosEmOrdemDecrescenteAtendimentosConcluidos();
 
     }
+
 }
