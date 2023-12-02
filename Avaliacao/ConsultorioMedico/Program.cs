@@ -73,7 +73,6 @@ class Programa{
                                     string crm = Console.ReadLine();
                                     medico = new Medico(nome, dataNascimento, cpf, crm);
                                     requisitos.CadastrarMedico(medico);
-                                    Console.WriteLine("Médico cadastrado com sucesso!");
                                     Console. ReadKey(true);
 
                                     
@@ -96,7 +95,6 @@ class Programa{
                                 string sintomas = Console.ReadLine();
                                 paciente = new Paciente(nomePaciente, dataNascimentoPaciente, cpfPaciente, sexo, sintomas);
                                 requisitos.CadastrarPaciente(paciente);
-                                Console.WriteLine("Paciente cadastrado com sucesso!");
                                 Console. ReadKey(true);
                             }
                             catch(FormatException){
@@ -115,7 +113,6 @@ class Programa{
                                     Paciente pacienteAtendimento = requisitos.getPaciente(cpfPaciente);
 
                                     requisitos.IniciarAtendimento(pacienteAtendimento, medicoAtendimento, pacienteAtendimento.Sintomas);
-                                    Console.WriteLine("Atendimento iniciado com sucesso!");
                                     Console. ReadKey(true);
                                 }
                                 catch(FormatException){
@@ -133,7 +130,6 @@ class Programa{
                                 string salaExame = Console.ReadLine();
                                 Exame exame = new Exame(nomeExame, valorExame, "", salaExame);
                                 requisitos.AddExame(exame);
-                                Console.WriteLine("Exame cadastrado com sucesso!");
                             }
                             catch(FormatException){
                                 Console.WriteLine("Erro de digitação!");
@@ -141,10 +137,46 @@ class Programa{
                             }
                                 break;
                             case 5:
+                                try{
+                                    Console.Write("Digite o CPF do médico: ");
+                                    string cpfMedico = Console.ReadLine();
+                                    requisitos.RemoverMedico(cpfMedico);
+                                    Console. ReadKey(true);
+                                }
+                                catch(FormatException){
+                                    Console.WriteLine("Erro de digitação!");
+                                    Console. ReadKey(true);
+                                }
+                                break;
+                            case 6:
+                                try{
+                                    Console.Write("Digite o CPF do paciente: ");
+                                    string cpfPaciente = Console.ReadLine();
+                                    requisitos.RemoverPaciente(cpfPaciente);
+                                    Console. ReadKey(true);
+                                }
+                                catch(FormatException){
+                                    Console.WriteLine("Erro de digitação!");
+                                    Console. ReadKey(true);
+                                }
+                                break;
+                            case 7:
+                                try{
+                                    Console.Write("Digite o nome do exame: ");
+                                    string nomeExame = Console.ReadLine();
+                                    requisitos.RemoverExame(nomeExame);
+                                    Console. ReadKey(true);
+                                }
+                                catch(FormatException){
+                                    Console.WriteLine("Erro de digitação!");
+                                    Console. ReadKey(true);
+                                }
+                                break;
+                            case 8:
                                 Console.WriteLine("Saindo...");
                                 break;
                         }
-                    }while(opcao != 5);
+                    }while(opcao != 8);
                 break;
 
                 case 2:

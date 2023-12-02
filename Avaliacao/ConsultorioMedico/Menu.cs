@@ -28,7 +28,10 @@ namespace ConsultorioMedico{
             Console.WriteLine("2. Cadastrar paciente.");
             Console.WriteLine("3. Cadastrar atendimento.");
             Console.WriteLine("4. Cadastrar exames.");
-            Console.WriteLine("5. Sair.");
+            Console.WriteLine("5. Remover médico.");
+            Console.WriteLine("6. Remover paciente.");
+            Console.WriteLine("7. Remover exames.");
+            Console.WriteLine("8. Sair.");
             Console.Write("Digite a opção desejada: ");
         }
         public static void ImprimirMenuRelatorios(){

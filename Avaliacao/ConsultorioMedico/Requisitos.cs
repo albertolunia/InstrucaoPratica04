@@ -258,7 +258,7 @@ namespace ConsultorioMedico
             }
             catch (Exception e){
                 Console.WriteLine(e.Message);
-                Console. ReadKey(true);s
+                Console. ReadKey(true);
             }
         }
 
@@ -357,6 +357,54 @@ namespace ConsultorioMedico
         public List<Paciente> PacientesDisponiveis{
             get{
                 return pacientes;
+            }
+        }
+
+        public void RemoverExame(string exame){
+            try{
+                if (exame == "")
+                    throw new Exception("Exame inválido!!!");
+                if (!exames.Any(e => e.Titulo == exame))
+                    throw new Exception("Exame não cadastrado!!!");
+                exames.Remove(exames.First(e => e.Titulo == exame));
+                Console.WriteLine("\nExame removido com sucesso!!!");
+                Console. ReadKey(true);
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+                Console. ReadKey(true);
+            }
+        }
+
+        public void RemoverMedico(string medico){
+            try{
+                if (medico == "")
+                    throw new Exception("Médico inválido!!!");
+                if (!medicos.Any(m => m.Cpf == medico))
+                    throw new Exception("Médico não cadastrado!!!");
+                medicos.Remove(medicos.First(m => m.Cpf == medico));
+                Console.WriteLine("\nMédico removido com sucesso!!!");
+                Console. ReadKey(true);
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+                Console. ReadKey(true);
+            }
+        }
+
+        public void RemoverPaciente(string paciente){
+            try{
+                if (paciente == "")
+                    throw new Exception("Paciente inválido!!!");
+                if (!pacientes.Any(p => p.Cpf == paciente))
+                    throw new Exception("Paciente não cadastrado!!!");
+                pacientes.Remove(pacientes.First(p => p.Cpf == paciente));
+                Console.WriteLine("\nPaciente removido com sucesso!!!");
+                Console. ReadKey(true);
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+                Console. ReadKey(true);
             }
         }
     }
