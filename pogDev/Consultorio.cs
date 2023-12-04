@@ -290,7 +290,7 @@ public class Consultorio{
                     }
                     break;
                 case 9:
-                    Console.WriteLine("Encerrando o programa..."); //menu relatorios
+                    Relatorios.menuRelatorios(Pacientes,Medicos,Atendimentos,Exames);
                     break;
                 default:
                     Console.WriteLine("Opção inválida. Tente novamente.");

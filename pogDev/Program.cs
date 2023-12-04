@@ -6,5 +6,3 @@ List<Exame> exames = new List<Exame>();
 List<Atendimento> atendimentos = new List<Atendimento>();
 
 Consultorio.menu(pacientes,medicos,exames,atendimentos);
-
-Relatorios.PacientesOrdemAlfabetica(pacientes);
