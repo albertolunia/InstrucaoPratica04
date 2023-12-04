@@ -1,7 +1,7 @@
 ﻿namespace pogDev;
 
 public class Relatorios{
-    public static void PacienteIdade(List<Paciente> Pacientes, int idadeInf, int idadeSup){
+    public static void pacienteIdade(List<Paciente> Pacientes, int idadeInf, int idadeSup){
         Console.WriteLine($"Pacientes com idade entre {idadeInf} a {idadeSup} anos");
         
         List<Paciente> relatorio = new List<Paciente>();
@@ -11,7 +11,7 @@ public class Relatorios{
         }
     }
 
-    public static void MedicosIdade(List<Medico> Medicos, int idadeInf, int idadeSup){
+    public static void medicosIdade(List<Medico> Medicos, int idadeInf, int idadeSup){
         Console.WriteLine($"Medicos com idade entre {idadeInf} a {idadeSup} anos");
         List<Medico> relatorio = new List<Medico>();
         relatorio = Medicos.Where(x => (x.Idade>idadeInf)&&(x.Idade<idadeSup)).ToList();
@@ -20,7 +20,7 @@ public class Relatorios{
         }
     }
 
-    public static void PacientesSexo(List<Paciente> Pacientes,string sexo){
+    public static void pacientesSexo(List<Paciente> Pacientes,string sexo){
         Console.WriteLine($"Pacientes com sexo definido como {sexo}");
         List<Paciente> relatorio = new List<Paciente>();
         relatorio = Pacientes.Where(x => (x.Sexo.Equals(sexo))).ToList();
@@ -29,7 +29,7 @@ public class Relatorios{
         }
     }
 
-    public static void PacientesOrdemAlfabetica(List<Paciente> Pacientes){
+    public static void pacientesOrdemAlfabetica(List<Paciente> Pacientes){
         Console.WriteLine("Pacientes em Ordem alfabetica");
         
         List<Paciente> relatorio = new List<Paciente>();
@@ -39,7 +39,7 @@ public class Relatorios{
         }
     }
 
-    public static void PacientesComSintomas(List<Paciente> Pacientes,string sintoma){
+    public static void pacientesComSintomas(List<Paciente> Pacientes,string sintoma){
         Console.WriteLine($"Lista de Pacientes que apresentam o sintoma: {sintoma}");
         List<Paciente> relatorio = new List<Paciente>();
         relatorio = Pacientes.Where(x => x.Sintomas.Any(s => s == sintoma)).ToList();
@@ -48,7 +48,7 @@ public class Relatorios{
         }
     }
 
-    public static void AniversariosNoMes(List<Pessoa> Pessoas,int mes){
+    public static void aniversariosNoMes(List<Pessoa> Pessoas,int mes){
         Console.WriteLine($"Pacientes e Medicos que fazem aniversario no mes {mes}");
         
         List<Pessoa> relatorio = new List<Pessoa>();
@@ -57,4 +57,7 @@ public class Relatorios{
             pessoa.imprimeInfo();
         }
     }
+
+
+
 }

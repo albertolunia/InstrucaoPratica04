@@ -5,13 +5,11 @@ public class Atendimento{
     private Medico medicoAtendente;
     private DateTime inicio;
     private DateTime fim;
-    private List<(Exame, string)> examesResultado;
+    private List<(Exame, string)> examesResultados;
     private float preco;
     private string diagnostico;
     private string suspeita;
-
     private Boolean finalizada;
-
 
     public Paciente PacienteAtendido{
         get{
@@ -21,7 +19,6 @@ public class Atendimento{
             pacienteAtendido = value;
         }
     }
-
     public Medico MedicoAtendente{
         get{
             return medicoAtendente;
@@ -30,7 +27,6 @@ public class Atendimento{
             medicoAtendente = value;
         }
     }
-
     public Boolean Finalizada{
         get{
             return finalizada;
@@ -38,21 +34,70 @@ public class Atendimento{
         set{
             finalizada = value;
         }
-}
+    }
+    public DateTime Inicio{
+        get{
+            return inicio;
+        }
+        set{
+            inicio = value;
+        }
+    }
+    public DateTime Fim{
+        get{
+            return fim;
+        }
+        set{
+            fim = value;
+        }
+    }
+    public List<(Exame,string)> ExamesResultados{
+        get{
+            return examesResultados;
+        }
+        set{
+            examesResultados = value;
+        }
+    }
+    public string Diagnostico{
+        get{
+            return diagnostico;
+        }
+        set{
+            diagnostico = value;
+        }
+    }
+    public string Suspeita{
+        get{
+            return suspeita;
+        }
+        set{
+            suspeita = value;
+        }
+    }
+    public float Preco{
+        get{
+            return preco;
+        }
+        set{
+            preco = value;
+        }
+    }
 
     public Atendimento(){
-        List<(Exame, string)> examesResultado = new List<(Exame, string)>();
+        this.examesResultados = new List<(Exame, string)>();
         this.finalizada = false;
     }
+
 
     public void iniciaAtendimento(Medico medico, Paciente paciente, List<Exame> examesSolicitados, float preco, string suspeita){
         this.inicio = DateTime.Now;
         this.medicoAtendente = medico;
-        this.PacienteAtendido = paciente;
+        this.pacienteAtendido = paciente;
         this.preco = preco;
         this.suspeita = suspeita;
         foreach(Exame exame in examesSolicitados){
-            this.examesResultado.Add((exame,""));
+            this.examesResultados.Add((exame,""));
         }
     }
 
@@ -62,15 +107,23 @@ public class Atendimento{
         this.diagnostico = diagnostico;
         int i = 0;
 
-        if(resultadosExames.Count == this.examesResultado.Count){
+        if(resultadosExames.Count == this.examesResultados.Count){
             foreach(string resultado in resultadosExames){
-                this.examesResultado[i] = (this.examesResultado[i].Item1, resultado);
+                this.examesResultados[i] = (this.examesResultados[i].Item1, resultado);
                 i++;
             }
         }else
             throw new Exception("Quantidade de resultados não bate com a quantidade de exames");
-        
-        
-        
     }
+
+    public void imprimeAtendimentoAberto(){
+        Console.WriteLine($"Medico: {this.medicoAtendente.Nome}, CRM: {this.medicoAtendente.Crm}, Paciente: {this.pacienteAtendido.Nome}, CPF: {this.pacienteAtendido.Cpf}, Inicio {this.Inicio}");
+        Console.WriteLine($"Suspeita: {this.suspeita}");
+        Console.Write("Exames: ");
+        foreach((Exame,string) exame in this.ExamesResultados){
+            Console.Write($"{exame.Item1.Nome}, ");
+        }
+        Console.WriteLine($"");
+    }
+
 }

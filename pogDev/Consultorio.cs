@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-
-namespace pogDev;
+﻿namespace pogDev;
 
 public class Consultorio{
 
@@ -27,17 +22,19 @@ public class Consultorio{
         }
         Console.WriteLine("Digite o sexo");
         string sexo = Console.ReadLine()!;
-        Console.WriteLine("Digite os sintomas separados por enter");
-        Console.WriteLine("Digite somente enter para parar de adicionar sintomas");
+        string opcao = "s";
         List<string> sintomas = new List<string>();
-        string sintoma="";
-        do{
-            sintoma = Console.ReadLine()!.ToLower();
+        while(opcao != "n"){
+            Console.WriteLine("Digite o sintoma");
+            string sintoma = Console.ReadLine()!.ToLower();
             if(sintomas.Contains(sintoma))
                 Console.WriteLine("Sintoma repetido");   
-            else if (sintoma !="")
-                sintomas.Add(sintoma);        
-        }while(sintoma =="");
+            else
+                sintomas.Add(sintoma);
+            Console.WriteLine($"Dejeja adicionar mais sintomas? (s/n)");
+            opcao = Console.ReadLine()!.ToLower();
+                 
+        }
             Console.WriteLine("Paciente Adicionado");
             Pacientes.Add(new Paciente(nome,cpf,dataDeNascimento,sexo,sintomas));
     }
@@ -148,35 +145,38 @@ public class Consultorio{
         string suspeita = Console.ReadLine()!;
         
         Console.WriteLine("Dado a lista de Exames Disponiveis:");
-        int i=0;
         foreach(Exame exame in Exames){
             Console.WriteLine($"{exame.Nome}");
         }
-        Console.WriteLine($"Digite o nome dos exames que serão solicitados");
         List<Exame> examesSolicitados = new List<Exame>();
-        string exameNome;
-                do{
-            exameNome = Console.ReadLine()!.ToLower();
-            if(Exames.Any(x => x.Nome == exameNome))
-                examesSolicitados.Add(Exames.Single(x => x.Nome == exameNome));
-            else if (exameNome !=""){}
+        string opcao;
+        Console.WriteLine($"Deseja Solicitar exames? (s/n)");
+        opcao = Console.ReadLine()!.ToLower();
+        while(opcao != "n"){
+            Console.WriteLine("Digite o nome do exame");
+            string nome = Console.ReadLine()!.ToLower();
+            if(Exames.Any(x => x.Nome ==  nome)){
+                examesSolicitados.Add(Exames.Single(x => x.Nome ==  nome)); 
+                Console.WriteLine($"Exame Adicionado");
+            }
             else
-                Console.WriteLine("Exame não disponivel");            
-        }while(exameNome =="");
+               throw new Exception("Exame não cadastrado no sistema");
+            Console.WriteLine($"Deseja solicitar mais exames?");
+            opcao = Console.ReadLine()!.ToLower();        
+        }
         
         Console.WriteLine($"Digite o preco do atendimento");
         float preco = float.Parse(Console.ReadLine()!);
 
         Atendimento atendimento = new Atendimento();
         atendimento.iniciaAtendimento(medico, paciente, examesSolicitados, preco, suspeita);
-        Atendimentos.Add( atendimento );
+        Atendimentos.Add(  atendimento );
     }
 
     public static void finalizaAtendimento(List<Atendimento> Atendimentos){
         Console.WriteLine("FINALIZA ATENDIMENTO");
 
         Atendimentos = Atendimentos.Where(x => !x.Finalizada).ToList();
-
         Console.WriteLine("Digite o cpf do paciente");
         string cpf = Console.ReadLine()!;
 
@@ -193,16 +193,14 @@ public class Consultorio{
                 throw new Exception("Medico não possui atendimentos");
             }
             atendimento = Atendimentos.Single();
-            Console.WriteLine("Digite os sintomas separados por enter");
-            Console.WriteLine("Digite somente enter para parar de adicionar sintomas");
+           
             List<string> resultados = new List<string>();
-            string resultado="";
-            do{
-            resultado = Console.ReadLine()!.ToLower();
-            if(resultados.Contains(resultado)){}
-            else if (resultado !="")
-                resultados.Add(resultado);        
-            }while(resultado =="");
+            string resultado;
+            foreach((Exame,string) exame in atendimento.ExamesResultados){
+                Console.WriteLine($"Digite o resultado do Exame: {exame.Item1.Nome}");
+                resultado = Console.ReadLine()!;
+                resultados.Add(resultado);
+            }
 
             Console.WriteLine($"Dados os resultados, digite o diagnostico");
             string diagnostico = Console.ReadLine()!;          
@@ -215,47 +213,81 @@ public class Consultorio{
 
 
     public static void menu(List<Paciente> Pacientes, List<Medico> Medicos, List<Exame> Exames, List<Atendimento> Atendimentos){
-        int opcao;
-        do
+    int opcao;
+    do
+    {
+        Console.WriteLine("Escolha uma opção:");
+        Console.WriteLine("1. Adicionar Paciente");
+        Console.WriteLine("2. Adicionar Médico");
+        Console.WriteLine("3. Remover Paciente");
+        Console.WriteLine("4. Remover Médico");
+        Console.WriteLine("5. Adicionar Exame");
+        Console.WriteLine("6. Remover Exame");
+        Console.WriteLine("7. Cadastrar Atendimento");
+        Console.WriteLine("8. Finalizar Atendimento");
+        Console.WriteLine("9. Menu Relatorios");
+
+        opcao = int.Parse(Console.ReadLine() ?? "0");
+
+        try
         {
-            Console.WriteLine("Escolha uma opção:");
-            Console.WriteLine("1. Adicionar Paciente");
-            Console.WriteLine("2. Adicionar Médico");
-            Console.WriteLine("3. Remover Paciente");
-            Console.WriteLine("4. Remover Médico");
-            Console.WriteLine("5. Adicionar Exame");
-            Console.WriteLine("6. Remover Exame");
-            Console.WriteLine("7. Cadastrar Atendimento");
-            Console.WriteLine("8. Finalizar Atendimento");
-            Console.WriteLine("9. Menu Relatorios");
-
-            opcao = int.Parse(Console.ReadLine() ?? "0");
-
             switch (opcao)
             {
                 case 1:
-                    Consultorio.adicionaPaciente(Pacientes);
+                    try{
+                        Consultorio.adicionaPaciente(Pacientes);
+                    } catch (Exception e){
+                        Console.WriteLine($"Erro ao adicionar paciente: {e.Message}");
+                    }
                     break;
                 case 2:
-                     Consultorio.adicionaMedico(Medicos);
+                    try{
+                        Consultorio.adicionaMedico(Medicos);
+                    }catch (Exception e){
+                        Console.WriteLine($"Erro ao adicionar médico: {e.Message}");
+                    }
                     break;
                 case 3:
-                     Consultorio.removePaciente(Pacientes);
+                    try{
+                        Consultorio.removePaciente(Pacientes);
+                    }catch (Exception e){
+                        Console.WriteLine($"Erro ao remover paciente: {e.Message}");
+                    }
                     break;
                 case 4:
-                     Consultorio.removeMedico(Medicos);
+                    try{
+                        Consultorio.removeMedico(Medicos);
+                    }catch (Exception e){
+                        Console.WriteLine($"Erro ao remover médico: {e.Message}");
+                    }
                     break;
                 case 5:
-                     Consultorio.adicionaExame(Exames);
+                    try{
+                        Consultorio.adicionaExame(Exames);
+                    }catch (Exception e){
+                        Console.WriteLine($"Erro ao adicionar exame: {e.Message}");
+                    }
                     break;
                 case 6:
-                     Consultorio.removeExame(Exames);
+                    try{
+                        Consultorio.removeExame(Exames);
+                    }catch (Exception e) {
+                        Console.WriteLine($"Erro ao remover exame: {e.Message}");
+                    }
                     break;
                 case 7:
-                     Consultorio.cadastraAtendimento(Pacientes, Medicos, Exames, Atendimentos);
+                    try{
+                        Consultorio.cadastraAtendimento(Pacientes, Medicos, Exames, Atendimentos);
+                    } catch (Exception e) {
+                        Console.WriteLine($"Erro ao cadastrar atendimento: {e.Message}");
+                    }
                     break;
                 case 8:
-                     Consultorio.finalizaAtendimento(Atendimentos);
+                    try{
+                        Consultorio.finalizaAtendimento(Atendimentos);
+                    }catch (Exception e){
+                        Console.WriteLine($"Erro ao finalizar atendimento: {e.Message}");
+                    }
                     break;
                 case 9:
                     Console.WriteLine("Encerrando o programa..."); //menu relatorios
@@ -264,7 +296,17 @@ public class Consultorio{
                     Console.WriteLine("Opção inválida. Tente novamente.");
                     break;
             }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Digite um número válido.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ocorreu um erro: {ex.Message}");
+        }
 
-        } while (opcao != 0);
+    } while (opcao != 0);
     }
+
 }
