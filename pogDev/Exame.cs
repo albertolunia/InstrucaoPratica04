@@ -52,5 +52,4 @@ public Exame(string nome,string descricao, string local, float preco){
     else
         this.valor = preco;
 }
-
 }

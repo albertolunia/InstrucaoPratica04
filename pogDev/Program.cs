@@ -2,10 +2,16 @@
 
 Consultorio pogdev = new Consultorio();
 
-pogdev.adicionaPaciente(new Paciente("Zoka","00000000000","2000/03/14", "masculino",new List<string>{"dor", "tosse"}));
-pogdev.adicionaPaciente(new Paciente("Maria","00000000001","1997/2/3","feminino",new List<string>()));
+List<Paciente> pacientes = new List<Paciente>();
+List<Medico> medicos = new List<Medico>();
+List<Exame> exames = new List<Exame>();
+List<Atendimento> atendimentos = new List<Atendimento>();
 
-Relatorios.PacientesOrdemAlfabetica(pogdev.Pacientes);
-Relatorios.PacienteIdade(pogdev.Pacientes,24,30);
-Relatorios.PacientesComSintomas(pogdev.Pacientes,"dor");
+
+
+
+
+Relatorios.PacientesOrdemAlfabetica(pacientes);
+Relatorios.PacienteIdade(pacientes,24,30);
+Relatorios.PacientesComSintomas(pacientes,"dor");
 

@@ -2,6 +2,8 @@
 
 public class Medico : Pessoa{
     private string crm;
+
+
     public string Crm{
         get{
             return crm;
@@ -10,7 +12,7 @@ public class Medico : Pessoa{
             crm = value;
         }
     }
-        public Medico(string nome,string cpf,string dataDeNascimento,string crm) : base(nome,cpf,dataDeNascimento){
+        public Medico(string nome,string cpf,DateTime dataDeNascimento,string crm) : base(nome,cpf,dataDeNascimento){
         this.crm = crm;
     }
 

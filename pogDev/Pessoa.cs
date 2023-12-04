@@ -52,19 +52,14 @@ public class Pessoa{
         }
     }
 
-    public Pessoa(string nome, string cpf, string dataDeNascimento){
+    public Pessoa(string nome, string cpf, DateTime dataDeNascimento){
         this.nome = nome;
 
-        if ((cpf.Length==11)||cpf.All(char.IsDigit))
+        if ((cpf.Length==11)&&cpf.All(char.IsDigit))
                 this.cpf = cpf;
             else
                 throw new ArgumentException("CPF invalido");
 
-        if(DateTime.TryParse(dataDeNascimento, out DateTime data)){
-            this.dataDeNascimento = data;
-        }
-        else{
-            throw new Exception("Data invalida");
-        }
+        this.dataDeNascimento = dataDeNascimento;
     }
 }

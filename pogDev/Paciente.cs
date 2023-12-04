@@ -23,7 +23,7 @@ public class Paciente : Pessoa{
         }
     }
 
-    public Paciente(string nome,string cpf,string dataDeNascimento,string sexo,List<string> sintomas):base(nome,cpf,dataDeNascimento){
+    public Paciente(string nome,string cpf,DateTime dataDeNascimento,string sexo,List<string> sintomas):base(nome,cpf,dataDeNascimento){
         
         this.sintomas = new List<string>();
         this.sintomas = sintomas;
