@@ -18,14 +18,18 @@ public class Paciente: Pessoa {
     public void pegaDadosPaciente(List <Paciente> pacientes){
     Console.WriteLine($"Digite o nome do paciente:");
     Nome = Console.ReadLine()!;
+    this.Nome = Nome;
     Console.WriteLine($"Digite a data de nascimento:");
     DataNascimento = DateTime.Parse(Console.ReadLine()!);
+    this.DataNascimento = DataNascimento;
     Console.WriteLine($"Digite o CPF do paciente:");
     CPF = Console.ReadLine()!;
     if(pacientes.Any(paci => paci.CPF == CPF)){
         throw new Exception("Este CPF já existe no sistema");
     } else {
-        if ((CPF.Length == 11)&&(CPF.All(char.IsDigit))){}
+        if ((CPF.Length == 11)&&(CPF.All(char.IsDigit))){
+            this.CPF = CPF;
+        }
         else{
             throw new Exception("Erro!");
         }
@@ -33,6 +37,7 @@ public class Paciente: Pessoa {
     Console.WriteLine($"Digite o sexo do paciente (feminino/masculino)");
     sexo = Console.ReadLine()!.ToLower();
     if (sexo.Equals("masculino")||sexo.Equals("feminino")){
+        this.Sexo = sexo;
     } else {
         throw new Exception("Erro, informe um sexo válido");
     }
@@ -46,8 +51,7 @@ public class Paciente: Pessoa {
     Console.WriteLine($"Deseja adicionar um novo sintoma? 1-sim, 2-não");
     opcao = int.Parse(Console.ReadLine()!);
     }
-
-    pacientes.Add(this);
+    this.Sintomas = sintomas;
     
     Console.WriteLine($"Paciente adicionado com sucesso!");
     

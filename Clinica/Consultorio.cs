@@ -5,6 +5,7 @@ public class Consultorio{
         Paciente paciente = new Paciente();
         try{
         paciente.pegaDadosPaciente(pacientes);
+        pacientes.Add(paciente);
         } catch(Exception e){
             Console.WriteLine(e);
             Consultorio.addPaciente(pacientes);
@@ -15,6 +16,7 @@ public class Consultorio{
     Medico medico = new Medico();
         try{
         medico.pegaDadosMedico(medicos);
+        medicos.Add(medico);
         } catch(Exception e){
             Console.WriteLine(e);
             Consultorio.addMedico(medicos);
