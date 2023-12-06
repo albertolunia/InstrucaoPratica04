@@ -23,6 +23,7 @@ public static class App
             Console.WriteLine("8- Relatorios");
             Console.WriteLine("9- Adicionar Plano de  Saude");
             Console.WriteLine("10- Remover Plano de Saude");
+            Console.WriteLine("11- Adicionar Pagamento");
             Console.WriteLine("0- Sair");
             op = Int32.Parse(Console.ReadLine() ?? "-1");
             switch(op){
@@ -444,8 +445,6 @@ public static class App
             throw new Exception("Paciente não cadastrado, por favor cadastre primeiro e depois marque o atendimento");
         }
         else{
-            Console.WriteLine("Informe qual o valor do pagamento");
-            double valor = double.Parse(Console.ReadLine() ?? "100");
             Console.WriteLine("Informe qual o método do pagamento");
             Console.WriteLine("1- Cartão de Crédito");
             Console.WriteLine("2- Boleto Bancário");
@@ -453,6 +452,7 @@ public static class App
             IPagamento pagamento;
             int opcao = Int32.Parse(Console.ReadLine() ?? "1");
             if(opcao == 1){
+                int valor = pacientes.Single(p => p.CPF.Equals(cpf)).Plano.ValorMensal;
                 pagamento = new PagamentoCartaoCredito(valor);
                 Console.WriteLine("Com o " + pagamento.Descricao + " recebe um desconto de " + pagamento.Desconto * 10 + " porcento");
                 pagamento.ReceberPagamento();
