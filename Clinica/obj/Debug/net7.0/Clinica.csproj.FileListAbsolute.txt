@@ -1,0 +1,5 @@
+/home/gabriel-dos-sousa/Área de trabalho/InstrucaoPratica04/Allana/Clinica/obj/Debug/net7.0/Clinica.csproj.AssemblyReference.cache
+/home/gabriel-dos-sousa/Área de trabalho/InstrucaoPratica04/Allana/Clinica/obj/Debug/net7.0/Clinica.GeneratedMSBuildEditorConfig.editorconfig
+/home/gabriel-dos-sousa/Área de trabalho/InstrucaoPratica04/Allana/Clinica/obj/Debug/net7.0/Clinica.AssemblyInfoInputs.cache
+/home/gabriel-dos-sousa/Área de trabalho/InstrucaoPratica04/Allana/Clinica/obj/Debug/net7.0/Clinica.AssemblyInfo.cs
+/home/gabriel-dos-sousa/Área de trabalho/InstrucaoPratica04/Allana/Clinica/obj/Debug/net7.0/Clinica.csproj.CoreCompileInputs.cache
