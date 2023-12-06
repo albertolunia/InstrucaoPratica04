@@ -64,7 +64,11 @@ public static class App
                 case 10:
                     try{removePlano();}
                     catch(Exception ex){Console.WriteLine(ex.Message);}
-                    break;                  
+                    break;   
+                case 11:
+                    try{addPagamento();}
+                    catch(Exception ex){Console.WriteLine(ex.Message);}
+                    break;     
             }
         }while(op != 0);        
     }
@@ -451,8 +455,8 @@ public static class App
             Console.WriteLine("3- Dinehiro em espécie");
             IPagamento pagamento;
             int opcao = Int32.Parse(Console.ReadLine() ?? "1");
+            int valor = pacientes.Single(p => p.CPF.Equals(cpf)).Plano.ValorMensal;
             if(opcao == 1){
-                int valor = pacientes.Single(p => p.CPF.Equals(cpf)).Plano.ValorMensal;
                 pagamento = new PagamentoCartaoCredito(valor);
                 Console.WriteLine("Com o " + pagamento.Descricao + " recebe um desconto de " + pagamento.Desconto * 10 + " porcento");
                 pagamento.ReceberPagamento();
