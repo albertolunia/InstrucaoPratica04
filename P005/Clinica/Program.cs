@@ -1,0 +1,2 @@
+﻿using Namespace;
+App.Init();
